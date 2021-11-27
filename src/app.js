@@ -56,7 +56,7 @@ app.get('/students', async(req, res) => {
 
 app.get('/students/:id', async(req, res) =>{
     try{
-        const _id = req.params.id;
+        const _id = req.params.id; //to access the unique id
         
         const studentData = await Student.findById(_id);
 
@@ -71,6 +71,37 @@ app.get('/students/:id', async(req, res) =>{
     }
 })
 
+//update the students by it id
+
+app.patch("/students/:id", async(req, res) => {
+    try{
+        const _id = req.params.id;
+        const updateStudents = await Student.findByIdAndUpdate(_id, req.body,{
+            new: true
+        });
+            res.send(updateStudents);
+            
+        }
+        catch(e){
+        res.status(400).send(e);
+
+    }
+})
+
+
+//delete students by id
+app.delete("/students/:id", async(req, res) =>{
+        try{
+        
+        const deleteStudent = await Students.findByIdAndDelete(req.params.id);
+            if(!req.params.id){
+                return res.status(400).send();
+            }res.send(deleteStudent);
+        }
+        catch(e){
+        res.status(400).send(e);
+        }
+})
 
 app.listen(port, () => {
     console.log(`connection is setup at ${port}`);
