@@ -40,6 +40,38 @@ app.post('/students', async(req, res)  =>{
     
 })
 
+
+//read the data of registered students
+app.get('/students', async(req, res) => {
+    try{
+        const studentsData = await Student.find();
+        res.send(studentsData);
+    }
+    catch(e){
+        res.send(e);
+    }
+})
+
+//get the indivisual students data using id
+
+app.get('/students/:id', async(req, res) =>{
+    try{
+        const _id = req.params.id;
+        
+        const studentData = await Student.findById(_id);
+
+        if(!studentData){
+            return res.status(404).send();
+        }else{
+            res.send(studentData);
+        }
+    }
+    catch(e){
+        res.status(500).send(e);
+    }
+})
+
+
 app.listen(port, () => {
     console.log(`connection is setup at ${port}`);
 })
